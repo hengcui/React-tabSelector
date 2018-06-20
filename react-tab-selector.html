@@ -1,0 +1,47 @@
+<!Doctype html>
+<html>
+    <head>
+        <script src="./build/react.js"></script>
+        <script src="./build/react-dom.js"></script>
+        <script src="./build/browser.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+
+    <body>
+        <div id="container"></div>
+        <script type="text/babel">
+            var data = [
+                {name: 'Red', value: 'red'},
+                {name: 'Blue', value: 'blue'},
+                {name: 'Yellow', value: 'yellow'},
+                {name: 'Green', value: 'green'},
+                {name: 'White', value: 'white'}
+            ];
+
+            var TabSelector = React.createClass({
+                getInitialState: function() {
+                    return {selected: this.props.selected};
+                },
+                handleClick: function(event) {
+                    this.setState({selected: event.target.getAttribute('data-value')});
+                },
+                render: function() {
+                    var tabs = this.props.data.map(function(item) {
+                        var selected = item.value == this.state.selected ? 'selected' : '';
+                        return <li data-value={item.value} className={selected} onClick={this.handleClick}>{item.name}</li>;
+                    }, this);
+
+                    return <div className="tab-selector">
+                                <label>{this.props.label}</label>
+                                <ul>{tabs}</ul>
+                            </div>;
+                }
+            });
+
+            ReactDOM.render(
+                <TabSelector label='Color' data={data} selected={null} />,  
+                document.getElementById("container")
+            );
+        </script>
+    </body>
+</html>
